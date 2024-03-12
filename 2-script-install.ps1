@@ -4,10 +4,19 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Exit
 }
 
-Write-Information "Baixando o WinGet and its dependencies..."
-Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
+Write-Information "Downloading WinGet and its dependencies..."
+if (!(Test-Path "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle")) {
+	Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+}
+
+if (!(Test-Path "Microsoft.VCLibs.x64.14.00.Desktop.appx")) {
+	Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
+}
+
+if (!(Test-Path "Microsoft.UI.Xaml.2.7.x64.appx")) {
+	Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
+}
+
 Write-Information "Installing WinGet and its dependencies..."
 Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
 Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
@@ -81,8 +90,8 @@ $windowsfeature = @(
 Write-Host "Installing Windows Features..."
 
 Foreach ($wf in $windowsfeature) {
-    Write-Host  "Installing"  $wf.name "..."
+    Write-Host  "Installing " $wf.name "..."
     Start-Sleep -s 1
-    Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All
+    Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All -NoRestart
     Start-Sleep -s 1
 }
