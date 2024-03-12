@@ -4,24 +4,30 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Exit
 }
 
-Write-Information "Downloading WinGet and its dependencies..."
-if (!(Test-Path "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle")) {
-	Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+Write-Information "Downloading and installing WinGet and its dependencies..."
+if (!(Get-AppPackage -AllUsers).Name -like "*Microsoft.VCLibs*") {
+	if (!(Test-Path "Microsoft.VCLibs.x64.14.00.Desktop.appx")) {
+		Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
+	}
+	
+	Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
 }
 
-if (!(Test-Path "Microsoft.VCLibs.x64.14.00.Desktop.appx")) {
-	Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
+if (!(Get-AppPackage -AllUsers).Name -like "*Microsoft.UI.Xaml*") {
+	if (!(Test-Path "Microsoft.UI.Xaml.2.7.x64.appx")) {
+		Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
+	}
+	
+	Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
 }
 
-if (!(Test-Path "Microsoft.UI.Xaml.2.7.x64.appx")) {
-	Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
+if(!(Get-AppxPackage -Name Microsoft.DesktopAppInstaller)) {
+   if (!(Test-Path "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle")) {
+		Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+	}
+	
+	Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 }
-
-Write-Information "Installing WinGet and its dependencies..."
-Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
-Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
-Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-
 
 Write-Output "Installing Apps"
 $apps = @(
@@ -61,9 +67,15 @@ Foreach ($app in $apps) {
 
 $windowsfeature = @(
     @{name = "NetFX3" },
+	@{name = "IIS-WebServerRole" },
 	@{name = "IIS-WebServer" },
 	@{name = "IIS-ManagementConsole" },
 	@{name = "IIS-ManagementService" },
+	@{name = "IIS-WebServerManagementTools"},
+	@{name = "IIS-ManagementConsole"},
+	@{name = "IIS-CommonHttpFeatures"},
+	@{name = "IIS-HttpRedirect"},
+	@{name = "IIS-IPSecurity"},
 	@{name = "IIS-ASPNET" },
 	@{name = "IIS-ASPNET45" },
     @{name = "Containers" },
@@ -90,8 +102,15 @@ $windowsfeature = @(
 Write-Host "Installing Windows Features..."
 
 Foreach ($wf in $windowsfeature) {
-    Write-Host  "Installing " $wf.name "..."
+    Write-Host "Checking " $wf.name "..."
     Start-Sleep -s 1
-    Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All -NoRestart
+
+    $component = Get-WindowsOptionalFeature -FeatureName $wf.name -Online
+
+    if($component.State -eq "Disabled" -or $component.State -eq "DisabledWithPayloadRemoved") {
+        Write-Host "Installing " $wf.name "..."
+        Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All -NoRestart
+    }
+	
     Start-Sleep -s 1
 }
