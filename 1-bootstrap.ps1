@@ -33,6 +33,5 @@ Start-Sleep -s 5
 Write-Output  "Restarting computer..."
 
 Read-Host -Prompt "Configuration is done, restart is needed, press [ENTER] to restart computer."
-$key = $host.UI.RawUI.ReadKey("NoEcho,IncludeKeyDown")
 Write-Host "Restarting..."
 #Restart-Computer
