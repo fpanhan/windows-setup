@@ -6,6 +6,11 @@
 
 **WARNING:** I do **NOT** take responsibility for what may happen to your system! Run scripts at your own risk!
 
+## Usage
+
+Open powershell command with administrative rights
+Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/main/1-bootstrap.ps1'))
+
 ## Credits
 
 Thank you to [valdecircarvalho](https://github.com/valdecircarvalho/), [Sycnex](https://github.com/Sycnex)
