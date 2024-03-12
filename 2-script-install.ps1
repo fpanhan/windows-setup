@@ -32,6 +32,7 @@ if(!(Get-AppxPackage -Name Microsoft.DesktopAppInstaller)) {
 Write-Output "Installing Apps"
 $apps = @(
 	@{name = "Google.Chrome" },
+	@{name = "Microsoft.UI.Xaml.2.8" },
     @{name = "7zip.7zip" },
 	@{name = "cURL.cURL" },
     @{name = "Adobe.Acrobat.Reader.64-bit" },
@@ -42,9 +43,15 @@ $apps = @(
     @{name = "Greenshot.Greenshot" },
     @{name = "JanDeDobbeleer.OhMyPosh" },
     @{name = "Microsoft.dotnet" },
+	@{name = "Microsoft.DotNet.SDK.3_1" },
+	@{name = "Microsoft.DotNet.SDK.6" },
+	@{name = "Microsoft.DotNet.SDK.7" },
+	@{name = "Microsoft.DotNet.SDK.8" },
+	#@{name = "Microsoft.DotNet.SDK.9" },
     @{name = "Microsoft.PowerShell" },
     @{name = "Microsoft.PowerToys" },
     @{name = "Microsoft.WindowsTerminal" },
+	@{name = "Microsoft.RemoteDesktopClient" },
     @{name = "Notepad++.Notepad++" },
     @{name = "OpenJS.NodeJS" },
 	@{name = "PostgreSQL.PostgreSQL" },
@@ -71,11 +78,11 @@ $windowsfeature = @(
 	@{name = "IIS-WebServer" },
 	@{name = "IIS-ManagementConsole" },
 	@{name = "IIS-ManagementService" },
-	@{name = "IIS-WebServerManagementTools"},
-	@{name = "IIS-ManagementConsole"},
-	@{name = "IIS-CommonHttpFeatures"},
-	@{name = "IIS-HttpRedirect"},
-	@{name = "IIS-IPSecurity"},
+	@{name = "IIS-WebServerManagementTools" },
+	@{name = "IIS-ManagementConsole" },
+	@{name = "IIS-CommonHttpFeatures" },
+	@{name = "IIS-HttpRedirect"} ,
+	@{name = "IIS-IPSecurity" },
 	@{name = "IIS-ASPNET" },
 	@{name = "IIS-ASPNET45" },
     @{name = "Containers" },
@@ -102,15 +109,23 @@ $windowsfeature = @(
 Write-Host "Installing Windows Features..."
 
 Foreach ($wf in $windowsfeature) {
-    Write-Host "Checking " $wf.name "..."
+    Write-Host "Checking" $wf.name "..."
     Start-Sleep -s 1
 
     $component = Get-WindowsOptionalFeature -FeatureName $wf.name -Online
 
     if($component.State -eq "Disabled" -or $component.State -eq "DisabledWithPayloadRemoved") {
-        Write-Host "Installing " $wf.name "..."
+        Write-Host "Installing" $wf.name "..."
         Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All -NoRestart
     }
 	
     Start-Sleep -s 1
 }
+
+Write-Output "Update all installed apps"
+winget upgrade --all --force --disable-interactivity --accept-source-agreements --accept-package-agreements --include-unknown
+
+Write-Host "Installing all Windows Update..."
+Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+Install-Module PSWindowsUpdate -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+Get-WindowsUpdate -Severity Important -AcceptAll -Install -IgnoreReboot
