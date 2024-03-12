@@ -16,17 +16,17 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 $ErrorActionPreference = 'silentlycontinue'
 
 Write-Output  "Executing Install script..."
-Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/master/2-script-install.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/main/2-script-install.ps1'))
 
 Start-Sleep -s 5
 
 Write-Output  "Executing Customization script..."
-Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/master/3-customizations.ps11'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/main/3-customizations.ps11'))
 
 Start-Sleep -s 5
 
 Write-Output  "Executing decrapfy Windows script..."
-Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/master/4-decrapfy.ps1'))
+Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/main/4-decrapfy.ps1'))
 
 Start-Sleep -s 5
 
