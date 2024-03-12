@@ -9,6 +9,7 @@
 ## Usage
 
 Open powershell command with administrative rights
+<p>&nbsp;</p>
 Invoke-Expression ((New-Object System.Net.WebClient).DownloadString('https://raw.githubusercontent.com/fpanhan/windows-setup/main/1-bootstrap.ps1'))
 
 ## Credits
