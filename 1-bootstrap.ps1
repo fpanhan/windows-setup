@@ -33,5 +33,16 @@ Start-Sleep -s 5
 Write-Output  "Restarting computer..."
 
 Read-Host -Prompt "Configuration is done, restart is needed, press [ENTER] to restart computer."
-Write-Host "Restarting..."
-#Restart-Computer
+Write-Host "Restarting in..."
+Start-Sleep 1
+Write-Host "                                               5"
+Start-Sleep 1
+Write-Host "                                               4"
+Start-Sleep 1
+Write-Host "                                               3"
+Start-Sleep 1
+Write-Host "                                               2"
+Start-Sleep 1
+Write-Host "                                               1"
+Start-Sleep 1
+Restart-Computer
