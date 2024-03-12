@@ -43,8 +43,7 @@ Set-ItemProperty -Path HKLM:\Software\Microsoft\Windows\CurrentVersion\AppModelU
 
 
 #--- Set Wallpaper ---
-
-$url = "https://github.com/fpanhan/windows-setup/raw/master/wallpaper/01.jpg"
+$url = "https://github.com/fpanhan/windows-setup/raw/main/wallpaper/01.jpg"
 $webclient = New-Object System.Net.WebClient
 $filepath = "c:\temp\wallpaper.jpg"
 $webclient.DownloadFile($url, $filepath)

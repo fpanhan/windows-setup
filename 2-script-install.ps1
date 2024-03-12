@@ -47,8 +47,7 @@ Foreach ($app in $apps) {
     else {
         Write-Host "Skipping: " $app.name " (already installed)"
     }
-	RefreshEnv
-		Start-Sleep -s 1
+	Start-Sleep -s 1
 }
 
 $windowsfeature = @(
@@ -85,6 +84,5 @@ Foreach ($wf in $windowsfeature) {
     Write-Host  "Installing"  $wf.name "..."
     Start-Sleep -s 1
     Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All
-    RefreshEnv
     Start-Sleep -s 1
 }
