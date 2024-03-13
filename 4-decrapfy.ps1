@@ -6,8 +6,8 @@
 
 # Ask for elevated permissions if required
 If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]"Administrator")) {
-	Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
-	Exit
+    Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs
+    Exit
 }
 
 
@@ -26,7 +26,7 @@ Set-ItemProperty -Path "HKLM:\Software\Policies\Microsoft\Windows\DataCollection
 # Disable Wi-Fi Sense
 Write-Host "Disabling Wi-Fi Sense..."
 If (!(Test-Path "HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting")) {
-New-Item -Path "HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Force | Out-Null
+    New-Item -Path "HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Force | Out-Null
 }
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowWiFiHotSpotReporting" -Name "Value" -Type DWord -Value 0
 Set-ItemProperty -Path "HKLM:\Software\Microsoft\PolicyManager\default\WiFi\AllowAutoConnectToWiFiSenseHotspots" -Name "Value" -Type DWord -Value 0
@@ -63,7 +63,7 @@ Set-ItemProperty -Path "HKLM:\System\CurrentControlSet\Services\lfsvc\Service\Co
 # Disable Feedback
 Write-Host "Disabling Feedback..."
 If (!(Test-Path "HKCU:\Software\Microsoft\Siuf\Rules")) {
-New-Item -Path "HKCU:\Software\Microsoft\Siuf\Rules" -Force | Out-Null
+    New-Item -Path "HKCU:\Software\Microsoft\Siuf\Rules" -Force | Out-Null
 }
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Siuf\Rules" -Name "NumberOfSIUFInPeriod" -Type DWord -Value 0
 
@@ -73,7 +73,7 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Siuf\Rules" -Name "NumberOfSIUF
 # Disable Advertising ID
 Write-Host "Disabling Advertising ID..."
 If (!(Test-Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo")) {
-New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" | Out-Null
+    New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" | Out-Null
 }
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\AdvertisingInfo" -Name "Enabled" -Type DWord -Value 0
 
@@ -83,16 +83,16 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Advertis
 # Disable Cortana
 Write-Host "Disabling Cortana..."
 If (!(Test-Path "HKCU:\Software\Microsoft\Personalization\Settings")) {
-New-Item -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Force | Out-Null
+    New-Item -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Force | Out-Null
 }
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\Personalization\Settings" -Name "AcceptedPrivacyPolicy" -Type DWord -Value 0
 If (!(Test-Path "HKCU:\Software\Microsoft\InputPersonalization")) {
-New-Item -Path "HKCU:\Software\Microsoft\InputPersonalization" -Force | Out-Null
+    New-Item -Path "HKCU:\Software\Microsoft\InputPersonalization" -Force | Out-Null
 }
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitTextCollection" -Type DWord -Value 1
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization" -Name "RestrictImplicitInkCollection" -Type DWord -Value 1
 If (!(Test-Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore")) {
-New-Item -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore" -Force | Out-Null
+    New-Item -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore" -Force | Out-Null
 }
 Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDataStore" -Name "HarvestContacts" -Type DWord -Value 0
 
@@ -118,7 +118,7 @@ Set-ItemProperty -Path "HKCU:\Software\Microsoft\InputPersonalization\TrainedDat
 Write-Host "Removing AutoLogger file and restricting directory..."
 $autoLoggerDir = "$env:PROGRAMDATA\Microsoft\Diagnosis\ETLLogs\AutoLogger"
 If (Test-Path "$autoLoggerDir\AutoLogger-Diagtrack-Listener.etl") {
-Remove-Item "$autoLoggerDir\AutoLogger-Diagtrack-Listener.etl"
+    Remove-Item "$autoLoggerDir\AutoLogger-Diagtrack-Listener.etl"
 }
 icacls $autoLoggerDir /deny SYSTEM:`(OI`)`(CI`)F | Out-Null
 
@@ -384,8 +384,6 @@ Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explo
 # $langs = Get-WinUserLanguageList
 # Set-WinUserLanguageList ($langs | ? {$_.LanguageTag -ne "en-US"}) -Force
 
-
-
 ##########
 # Remove unwanted applications
 ##########
@@ -470,7 +468,7 @@ Get-AppxPackage "Microsoft.XboxGameOverlay" | Remove-AppxPackage
 Get-AppxPackage "Microsoft.XboxSpeechToTextOverlay" | Remove-AppxPackage
 Get-AppxPackage "Microsoft.MixedReality.Portal" | Remove-AppxPackage
 Get-AppBackgroundTask "Microsoft.XboxIdentityProvider" | Remove-AppPackage
-Get-AppxPackage -AllUsers | Where-Object {$_.Name -like "*WebExperience*"} | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue
+Get-AppxPackage -AllUsers | Where-Object { $_.Name -like "*WebExperience*" } | Remove-AppxPackage -AllUsers -ErrorAction SilentlyContinue
 
 
 # Install default Microsoft applications
@@ -508,8 +506,8 @@ Get-AppxPackage -AllUsers | Where-Object {$_.Name -like "*WebExperience*"} | Rem
 # Remove-Item -Path C:\Mnt -Recurse
 
 # Uninstall Windows Media Player
-# Write-Host "Uninstalling Windows Media Player..."
-# dism /online /Disable-Feature /FeatureName:MediaPlayback /Quiet /NoRestart
+Write-Host "Uninstalling Windows Media Player..."
+dism /online /Disable-Feature /FeatureName:MediaPlayback /Quiet /NoRestart
 
 # Install Windows Media Player
 # dism /online /Enable-Feature /FeatureName:MediaPlayback /Quiet /NoRestart
@@ -557,10 +555,10 @@ Get-AppxPackage -AllUsers | Where-Object {$_.Name -like "*WebExperience*"} | Rem
 #Set-ItemProperty -Path "HKCR:\Applications\photoviewer.dll\shell\open\DropTarget" -Name "Clsid" -Type String -Value "{FFE2A43C-56B9-4bf5-9A79-CC6D4285608A}"
 
 # Remove Photo Viewer from "Open with..."
-# If (!(Test-Path "HKCR:")) {
-# New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
-# }
-# Remove-Item -Path "HKCR:\Applications\photoviewer.dll\shell\open" -Recurse
+If (!(Test-Path "HKCR:")) {
+    New-PSDrive -Name HKCR -PSProvider Registry -Root HKEY_CLASSES_ROOT | Out-Null
+}
+Remove-Item -Path "HKCR:\Applications\photoviewer.dll\shell\open" -Recurse
 
 # This script disables unwanted Windows services. If you do not want to disable
 # certain services comment out the corresponding lines below.
@@ -761,8 +759,8 @@ foreach ($app in $apps) {
     Get-AppxPackage -Name $app -AllUsers | Remove-AppxPackage -AllUsers
 
     Get-AppXProvisionedPackage -Online |
-        Where-Object DisplayName -EQ $app |
-        Remove-AppxProvisionedPackage -Online
+    Where-Object DisplayName -EQ $app |
+    Remove-AppxProvisionedPackage -Online
 }
 
 # Prevents Apps from re-installing
@@ -860,17 +858,14 @@ Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" 
 
 
 # Remove Password Age Limit (Passwords never expire) #
-
 net accounts /maxpwage:0
 
 
 # Set Password Age Limit to 60 Days#
-
 #net accounts /maxpwage:60
 
 
 # This script removes all Start Menu Tiles from the .default user #
-
 Set-Content -Path 'C:\Users\Default\AppData\Local\Microsoft\Windows\Shell\DefaultLayouts.xml' -Value '<LayoutModificationTemplate xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout" Version="1" xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification">'
 Add-Content -Path 'C:\Users\Default\AppData\Local\Microsoft\Windows\Shell\DefaultLayouts.xml' -value '  <LayoutOptions StartTileGroupCellWidth="6" />'
 Add-Content -Path 'C:\Users\Default\AppData\Local\Microsoft\Windows\Shell\DefaultLayouts.xml' -value '  <DefaultLayoutOverride>'
@@ -899,11 +894,10 @@ $START_MENU_LAYOUT = @"
 </LayoutModificationTemplate>
 "@
 
-$layoutFile="C:\Windows\StartMenuLayout.xml"
+$layoutFile = "C:\Windows\StartMenuLayout.xml"
 
 #Delete layout file if it already exists
-If(Test-Path $layoutFile)
-{
+If (Test-Path $layoutFile) {
     Remove-Item $layoutFile
 }
 
@@ -913,10 +907,10 @@ $START_MENU_LAYOUT | Out-File $layoutFile -Encoding ASCII
 $regAliases = @("HKLM", "HKCU")
 
 #Assign the start layout and force it to apply with "LockedStartLayout" at both the machine and user level
-foreach ($regAlias in $regAliases){
+foreach ($regAlias in $regAliases) {
     $basePath = $regAlias + ":\SOFTWARE\Policies\Microsoft\Windows"
     $keyPath = $basePath + "\Explorer"
-    IF(!(Test-Path -Path $keyPath)) {
+    IF (!(Test-Path -Path $keyPath)) {
         New-Item -Path $basePath -Name "Explorer"
     }
     Set-ItemProperty -Path $keyPath -Name "LockedStartLayout" -Value 1
@@ -930,7 +924,7 @@ $wshell = New-Object -ComObject wscript.shell; $wshell.SendKeys('^{ESCAPE}')
 Start-Sleep -s 5
 
 #Enable the ability to pin items again by disabling "LockedStartLayout"
-foreach ($regAlias in $regAliases){
+foreach ($regAlias in $regAliases) {
     $basePath = $regAlias + ":\SOFTWARE\Policies\Microsoft\Windows"
     $keyPath = $basePath + "\Explorer"
     Set-ItemProperty -Path $keyPath -Name "LockedStartLayout" -Value 0
@@ -945,12 +939,12 @@ Import-StartLayout -LayoutPath $layoutFile -MountPath $env:SystemDrive\
 Remove-Item $layoutFile
 
 #Fix Whitelisted Apps
-If (!(Get-AppxPackage -AllUsers | Select Microsoft.Paint3D, Microsoft.WindowsCalculator, Microsoft.WindowsStore, Microsoft.Windows.Photos)) {
-	#Credit to abulgatz for these 4 lines of code
-	Get-AppxPackage -allusers Microsoft.Paint3D | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -allusers Microsoft.WindowsCalculator | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -allusers Microsoft.WindowsStore | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"}
-	Get-AppxPackage -allusers Microsoft.Windows.Photos | Foreach {Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml"} 
+If (!(Get-AppxPackage -AllUsers | Select-Object Microsoft.Paint3D, Microsoft.WindowsCalculator, Microsoft.WindowsStore, Microsoft.Windows.Photos)) {
+    #Credit to abulgatz for these 4 lines of code
+    Get-AppxPackage -allusers Microsoft.Paint3D | ForEach-Object { Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
+    Get-AppxPackage -allusers Microsoft.WindowsCalculator | ForEach-Object { Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
+    Get-AppxPackage -allusers Microsoft.WindowsStore | ForEach-Object { Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" }
+    Get-AppxPackage -allusers Microsoft.Windows.Photos | ForEach-Object { Add-AppxPackage -DisableDevelopmentMode -Register "$($_.InstallLocation)\AppXManifest.xml" } 
 } 
 
 
@@ -1051,8 +1045,8 @@ reg add "HKEY_USERS\.DEFAULT\SOFTWARE\Microsoft\Windows\CurrentVersion\Themes\Pe
 #				3 		Downloads (The Download-Folder)
 
 Write-Host "Set Explorers Entry Point"
-	$LaunchTo = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
-	Set-ItemProperty $LaunchTo LaunchTo -Value 1
+$LaunchTo = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
+Set-ItemProperty $LaunchTo LaunchTo -Value 1
 
 
 #Stops edge from taking over as the default .PDF viewer    
@@ -1061,40 +1055,40 @@ $NoPDF = "HKCR:\.pdf"
 $NoProgids = "HKCR:\.pdf\OpenWithProgids"
 $NoWithList = "HKCR:\.pdf\OpenWithList" 
 If (!(Get-ItemProperty $NoPDF  NoOpenWith)) {
-	New-ItemProperty $NoPDF NoOpenWith 
+    New-ItemProperty $NoPDF NoOpenWith 
 }        
 If (!(Get-ItemProperty $NoPDF  NoStaticDefaultVerb)) {
-	New-ItemProperty $NoPDF  NoStaticDefaultVerb 
+    New-ItemProperty $NoPDF  NoStaticDefaultVerb 
 }        
 If (!(Get-ItemProperty $NoProgids  NoOpenWith)) {
-	New-ItemProperty $NoProgids  NoOpenWith 
+    New-ItemProperty $NoProgids  NoOpenWith 
 }        
 If (!(Get-ItemProperty $NoProgids  NoStaticDefaultVerb)) {
-	New-ItemProperty $NoProgids  NoStaticDefaultVerb 
+    New-ItemProperty $NoProgids  NoStaticDefaultVerb 
 }        
 If (!(Get-ItemProperty $NoWithList  NoOpenWith)) {
-	New-ItemProperty $NoWithList  NoOpenWith
+    New-ItemProperty $NoWithList  NoOpenWith
 }        
 If (!(Get-ItemProperty $NoWithList  NoStaticDefaultVerb)) {
-	New-ItemProperty $NoWithList  NoStaticDefaultVerb 
+    New-ItemProperty $NoWithList  NoStaticDefaultVerb 
 }
 		
 #Appends an underscore '_' to the Registry key for Edge
 $Edge = "HKCR:\AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_"
 If (Test-Path $Edge) {
-	Set-Item $Edge AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_ 
+    Set-Item $Edge AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_ 
 }
 
 #Disable Last Used Files and Folders View
 $Keys = @(
-	# Deactivate showing of last used files
-	"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HomeFolderDesktop\NameSpace\DelegateFolders\{3134ef9c-6b18-4996-ad04-ed5912e00eb5}"
-	# Deactivate showing of last used folders
-	"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HomeFolderDesktop\NameSpace\DelegateFolders\{3936E9E4-D92C-4EEE-A85A-BC16D5EA0819}"
+    # Deactivate showing of last used files
+    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HomeFolderDesktop\NameSpace\DelegateFolders\{3134ef9c-6b18-4996-ad04-ed5912e00eb5}"
+    # Deactivate showing of last used folders
+    "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HomeFolderDesktop\NameSpace\DelegateFolders\{3936E9E4-D92C-4EEE-A85A-BC16D5EA0819}"
 )
 	
 #This writes the output of each key it is removing and also removes the keys listed above.
 ForEach ($Key in $Keys) {
-	Write-Output "Removing $Key from registry"
-	Remove-Item $Key -Recurse
+    Write-Output "Removing $Key from registry"
+    Remove-Item $Key -Recurse
 }

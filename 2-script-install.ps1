@@ -21,8 +21,8 @@ if (!(Get-AppPackage -AllUsers).Name -like "*Microsoft.UI.Xaml*") {
 	Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
 }
 
-if(!(Get-AppxPackage -Name Microsoft.DesktopAppInstaller)) {
-   if (!(Test-Path "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle")) {
+if (!(Get-AppxPackage -Name Microsoft.DesktopAppInstaller)) {
+	if (!(Test-Path "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle")) {
 		Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
 	}
 	
@@ -32,6 +32,10 @@ if(!(Get-AppxPackage -Name Microsoft.DesktopAppInstaller)) {
 Write-Output "Installing Apps"
 $apps = @(
 	@{name = "Google.Chrome" },
+	#@{name = "Mozilla.Firefox" },
+	#@{name = "Opera.Opera" },
+	#@{name = "Opera.OperaGX" },
+	#@{name = "Brave.Brave" },
 	@{name = "voidtools.Everything" },
 	@{name = "Mythicsoft.AgentRansack" },
 	@{name = "Toinane.Colorpicker" },
@@ -47,9 +51,15 @@ $apps = @(
 	@{name = "Greenshot.Greenshot" },
 	@{name = "JanDeDobbeleer.OhMyPosh" },
 	@{name = "Postman.Postman" },
-	@{name = "Python.Python.3.12" },
-	@{name = "Python.Launcher" },
-	@{name = "Microsoft.VisualStudioCode" },
+	@{name = "SmartBear.SoapUI" },
+	#@{name = "Python.Python.3.12" },
+	#@{name = "Python.Launcher" },
+	#@{name = "VSCodium.VSCodium" },
+	#@{name = "Microsoft.VisualStudioCode" },
+	#@{name = "Microsoft.VisualStudio.2022.Professional" },
+	#@{name = "Microsoft.VisualStudio.2022.Community" },
+	#@{name = "Microsoft.VisualStudio.2022.Enterprise" },
+	#@{name = "Microsoft.SQLServerManagementStudio" },
 	@{name = "Microsoft.UI.Xaml.2.8" },
 	@{name = "Microsoft.PowerToys" },
 	@{name = "Microsoft.dotnet" },
@@ -63,27 +73,27 @@ $apps = @(
 	@{name = "Microsoft.WindowsTerminal" },
 	@{name = "Microsoft.RemoteDesktopClient" },
 	@{name = "Notepad++.Notepad++" },
-	@{name = "OpenJS.NodeJS" },
+	#@{name = "OpenJS.NodeJS" },
 	@{name = "PostgreSQL.PostgreSQL" },
 	@{name = "dbeaver.dbeaver" },
 	@{name = "Zoom.Zoom" }
 );
 
 Foreach ($app in $apps) {
-    $listApp = winget list --exact -q $app.name
+	$listApp = winget list --exact -q $app.name
 	Start-Sleep -s 1
-    if (![String]::Join("", $listApp).Contains($app.name)) {
-        Write-Host "Installing: " $app.name
-        winget install -e -h --accept-source-agreements --accept-package-agreements --id $app.name
-    }
-    else {
-        Write-Host "Skipping: " $app.name " (already installed)"
-    }
+	if (![string]::Join("", $listApp).Contains($app.name)) {
+		Write-Host "Installing: " $app.name
+		winget install -e -h --accept-source-agreements --accept-package-agreements --id $app.name
+	}
+	else {
+		Write-Host "Skipping: " $app.name " (already installed)"
+	}
 	Start-Sleep -s 1
 }
 
 $windowsfeature = @(
-    @{name = "NetFX3" },
+	@{name = "NetFX3" },
 	@{name = "IIS-WebServerRole" },
 	@{name = "IIS-WebServer" },
 	@{name = "IIS-ManagementConsole" },
@@ -91,45 +101,45 @@ $windowsfeature = @(
 	@{name = "IIS-WebServerManagementTools" },
 	@{name = "IIS-ManagementConsole" },
 	@{name = "IIS-CommonHttpFeatures" },
-	@{name = "IIS-HttpRedirect"} ,
+	@{name = "IIS-HttpRedirect" } ,
 	@{name = "IIS-IPSecurity" },
 	@{name = "IIS-ASPNET" },
 	@{name = "IIS-ASPNET45" },
-    @{name = "Containers" },
-    @{name = "HypervisorPlatform" },
-    @{name = "Microsoft-Windows-Subsystem-Linux" },
-    @{name = "VirtualMachinePlatform" },
-    @{name = "SimpleTCP" },
-    @{name = "Microsoft-Hyper-V-All" },
-    @{name = "Containers-DisposableClientVM" },
-    @{name = "Microsoft-Hyper-V-Tools-All" },
-    @{name = "Microsoft-Hyper-V" },  
-    @{name = "TelnetClient" },
-    @{name = "Windows-Defender-Default-Definitions" },
-    @{name = "Microsoft-Hyper-V-Management-PowerShell" },
-    @{name = "Microsoft-Hyper-V-Services" },
-    @{name = "Microsoft-Hyper-V-Hypervisor" },      
-    @{name = "Microsoft-Hyper-V-Management-Clients" },
-    @{name = "Windows-Defender-ApplicationGuard" },
-    @{name = "NFS-Administration" },
-    @{name = "ClientForNFS-Infrastructure" },
-    @{name = "ServicesForNFS-ClientOnly" }
+	@{name = "Containers" },
+	@{name = "HypervisorPlatform" },
+	@{name = "Microsoft-Windows-Subsystem-Linux" },
+	@{name = "VirtualMachinePlatform" },
+	@{name = "SimpleTCP" },
+	@{name = "Microsoft-Hyper-V-All" },
+	@{name = "Containers-DisposableClientVM" },
+	@{name = "Microsoft-Hyper-V-Tools-All" },
+	@{name = "Microsoft-Hyper-V" },  
+	@{name = "TelnetClient" },
+	@{name = "Windows-Defender-Default-Definitions" },
+	@{name = "Microsoft-Hyper-V-Management-PowerShell" },
+	@{name = "Microsoft-Hyper-V-Services" },
+	@{name = "Microsoft-Hyper-V-Hypervisor" },      
+	@{name = "Microsoft-Hyper-V-Management-Clients" },
+	@{name = "Windows-Defender-ApplicationGuard" },
+	@{name = "NFS-Administration" },
+	@{name = "ClientForNFS-Infrastructure" },
+	@{name = "ServicesForNFS-ClientOnly" }
 )
 
 Write-Host "Installing Windows Features..."
 
 Foreach ($wf in $windowsfeature) {
-    Write-Host "Checking" $wf.name "..."
-    Start-Sleep -s 1
+	Write-Host "Checking" $wf.name "..."
+	Start-Sleep -s 1
 
-    $component = Get-WindowsOptionalFeature -FeatureName $wf.name -Online
+	$component = Get-WindowsOptionalFeature -FeatureName $wf.name -Online
 
-    if($component.State -eq "Disabled" -or $component.State -eq "DisabledWithPayloadRemoved") {
-        Write-Host "Installing" $wf.name "..."
-        Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All -NoRestart
-    }
+	if ($component.State -eq "Disabled" -or $component.State -eq "DisabledWithPayloadRemoved") {
+		Write-Host "Installing" $wf.name "..."
+		Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All -NoRestart
+	}
 	
-    Start-Sleep -s 1
+	Start-Sleep -s 1
 }
 
 Write-Output "Update all installed apps"
@@ -139,3 +149,6 @@ Write-Host "Installing all Windows Update..."
 Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 Install-Module PSWindowsUpdate -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
 Get-WindowsUpdate -Severity Important -AcceptAll -Install -IgnoreReboot
+
+#Write-Host "Installing WSL Ubuntu..."
+#wsl --install -d Ubuntu

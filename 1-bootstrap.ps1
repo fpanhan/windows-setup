@@ -18,8 +18,7 @@ $startDate = (Get-Date)
 $ErrorActionPreference = 'silentlycontinue'
 
 $OriginalPref = $ProgressPreference # Default is 'Continue'
-$ProgressPreference = "SilentlyContinue"
-
+$ProgressPreference = "SilentlyContinue" # Hide progressbar
 
 Write-Output  "Executing Install script..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/2-script-install.ps1"))
