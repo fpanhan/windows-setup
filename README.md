@@ -9,7 +9,8 @@
 ## Usage
 
 Open powershell command with administrative rights<br>
-Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/1-bootstrap.ps1"))
+1. Set-ExecutionPolicy Bypass -Scope Process -Force;
+2. Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/1-bootstrap.ps1"))
 
 ## Credits
 

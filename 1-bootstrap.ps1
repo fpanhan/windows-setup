@@ -25,6 +25,11 @@ Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object
 
 Start-Sleep -s 5
 
+Write-Output  "Executing configuring script..."
+Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/2.1-configuring.ps1"))
+
+Start-Sleep -s 5
+
 Write-Output  "Executing Customization script..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/3-customizations.ps11"))
 
