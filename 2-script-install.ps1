@@ -79,13 +79,13 @@ $apps = @(
 
 Foreach ($app in $apps) {
 	$listApp = winget list --exact -q $app.name
-	Start-Sleep -s 1
 	if (![string]::Join("", $listApp).Contains($app.name)) {
 		Write-Host "Installing: " $app.name
 		winget install -e -h --accept-source-agreements --accept-package-agreements --id $app.name
 	}
 	else {
-		Write-Host "Skipping: " $app.name " (already installed)"
+		Write-Host "Skipping: " $app.name -NoNewline
+		Write-Host " (already installed)" -ForegroundColor Green
 	}
 }
 
@@ -127,7 +127,6 @@ Write-Host "Installing Windows Features..."
 
 Foreach ($wf in $windowsfeature) {
 	Write-Host "Checking" $wf.name "..."
-	Start-Sleep -s 1
 
 	$component = Get-WindowsOptionalFeature -FeatureName $wf.name -Online
 
