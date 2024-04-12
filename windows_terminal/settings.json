@@ -1,11 +1,9 @@
 {
     "$help": "https://aka.ms/terminal-documentation",
     "$schema": "https://aka.ms/terminal-profiles-schema",
-    "actions": 
-    [
+    "actions": [
         {
-            "command": 
-            {
+            "command": {
                 "action": "copy",
                 "singleLine": false
             },
@@ -16,8 +14,7 @@
             "keys": "ctrl+v"
         },
         {
-            "command": 
-            {
+            "command": {
                 "action": "splitPane",
                 "split": "auto",
                 "splitMode": "duplicate"
@@ -32,22 +29,17 @@
     "copyFormatting": "none",
     "copyOnSelect": false,
     "defaultProfile": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
-    "newTabMenu": 
-    [
+    "newTabMenu": [
         {
             "type": "remainingProfiles"
         }
     ],
-    "profiles": 
-    {
-        "defaults": 
-        {
+    "profiles": {
+        "defaults": {
             "closeOnExit": "graceful",
-            "font": 
-            {
-                "face": "Fira Code",
-                "features": 
-                {
+            "font": {
+                "face": "FiraCode Nerd Font",
+                "features": {
                     "cv02": 1,
                     "cv14": 1,
                     "cv25": 1,
@@ -68,14 +60,12 @@
             "snapOnInput": true,
             "useAcrylic": true
         },
-        "list": 
-        [
+        "list": [
             {
                 "colorScheme": "Vintage",
                 "cursorShape": "vintage",
                 "elevate": true,
-                "font": 
-                {
+                "font": {
                     "face": "MesloLGS Nerd Font",
                     "size": 12.0
                 },
@@ -114,8 +104,7 @@
             }
         ]
     },
-    "schemes": 
-    [
+    "schemes": [
         {
             "background": "#0C0C0C",
             "black": "#0C0C0C",
@@ -347,5 +336,6 @@
             "yellow": "#808000"
         }
     ],
-    "themes": []
+    "themes": [
+    ]
 }
