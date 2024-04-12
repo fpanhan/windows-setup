@@ -31,35 +31,25 @@ if (!(Get-AppxPackage -Name Microsoft.DesktopAppInstaller)) {
 
 Write-Output "Installing Apps"
 $apps = @(
-	@{name = "Google.Chrome" },
+	#@{name = "Google.Chrome" },
 	#@{name = "Mozilla.Firefox" },
 	#@{name = "Opera.Opera" },
 	#@{name = "Opera.OperaGX" },
 	#@{name = "Brave.Brave" },
-	@{name = "Microsoft.UI.Xaml.2.8" },
-	@{name = "Microsoft.dotnet" },
-	@{name = "Microsoft.DotNet.SDK.6" },
-	@{name = "Microsoft.DotNet.SDK.7" },
-	@{name = "Microsoft.DotNet.SDK.8" },
-	#@{name = "Microsoft.DotNet.SDK.9" },
-	@{name = "Microsoft.PowerShell" },
-	@{name = "Microsoft.WindowsTerminal" },
-	@{name = "Chocolatey.Chocolatey" },
-	@{name = "Git.Git" },
-	@{name = "GitHub.GitLFS" },
-	@{name = "GitExtensionsTeam.GitExtensions" },
 	@{name = "voidtools.Everything" },
 	@{name = "Mythicsoft.AgentRansack" },
 	@{name = "Toinane.Colorpicker" },
 	@{name = "IrfanSkiljan.IrfanView" },
 	@{name = "IrfanSkiljan.IrfanView.PlugIns" },
-	@{name = "7zip.7zip" },
-	@{name = "cURL.cURL" },
 	@{name = "Adobe.Acrobat.Reader.64-bit" },
-	@{name = "Greenshot.Greenshot" },
+	@{name = "cURL.cURL" },
+	@{name = "Git.Git" },
+	@{name = "GitHub.GitLFS" },
+	@{name = "GitExtensionsTeam.GitExtensions" },
 	@{name = "JanDeDobbeleer.OhMyPosh" },
-	@{name = "Postman.Postman" },
-	@{name = "SmartBear.SoapUI" },
+	@{name = "Skillbrains.Lightshot" },
+	#@{name = "Postman.Postman" },
+	#@{name = "SmartBear.SoapUI" },
 	#@{name = "Python.Python.3.12" },
 	#@{name = "Python.Launcher" },
 	#@{name = "VSCodium.VSCodium" },
@@ -68,13 +58,23 @@ $apps = @(
 	#@{name = "Microsoft.VisualStudio.2022.Community" },
 	#@{name = "Microsoft.VisualStudio.2022.Enterprise" },
 	#@{name = "Microsoft.SQLServerManagementStudio" },
+	@{name = "Microsoft.UI.Xaml.2.8" },
 	@{name = "Microsoft.PowerToys" },
-	@{name = "Microsoft.RemoteDesktopClient" },
+	@{name = "Microsoft.dotnet" },
+	#@{name = "Microsoft.DotNet.SDK.3_1" },
+	@{name = "Microsoft.DotNet.SDK.6" },
+	@{name = "Microsoft.DotNet.SDK.7" },
+	@{name = "Microsoft.DotNet.SDK.8" },
+	#@{name = "Microsoft.DotNet.SDK.9" },
+	@{name = "Microsoft.PowerShell" },
+	@{name = "Chocolatey.Chocolatey" },
+	@{name = "Microsoft.WindowsTerminal" },
 	@{name = "Notepad++.Notepad++" },
-	#@{name = "OpenJS.NodeJS" },
-	@{name = "PostgreSQL.PostgreSQL" },
-	@{name = "dbeaver.dbeaver" },
-	@{name = "Zoom.Zoom" }
+	@{name = "OpenJS.NodeJS" },
+	#@{name = "PostgreSQL.PostgreSQL" },
+	#@{name = "dbeaver.dbeaver" },
+	#@{name = "Zoom.Zoom" },
+	@{name = "7zip.7zip" }
 );
 
 Foreach ($app in $apps) {
@@ -148,6 +148,31 @@ Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
 Install-Module PSWindowsUpdate -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
 Get-WindowsUpdate -Severity Important -AcceptAll -Install -IgnoreReboot
 
-#Write-Host "Installing WSL Ubuntu..."
-#wsl --install -d Ubuntu
+Write-Host "Installing WSL Ubuntu..."
+# Save the current encoding and switch to UTF-8
+$prev = [Console]::OutputEncoding
+[Console]::OutputEncoding = [System.Text.Encoding]::Unicode
 
+[string]$ubuntu = wsl -l | Where {$_.Replace("`0","") -match "^Ubuntu"}
+# Checking if Ubuntu is already installed
+if (!($ubuntu -like "Ubuntu*"))
+{
+    wsl --install -d Ubuntu
+}
+
+# Restore the previous encoding
+[Console]::OutputEncoding = $prev
+
+wsl --setdefault Ubuntu
+& dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
+& dism.exe /online /enable-feature /featurename:VirtualMachinePlatform /all /norestart
+
+
+#Write-Host "Creating WSL 2 + Windows Terminal + Oh My Zsh + Powerlevel10k"
+#https://github.com/deanbot/easy-wsl-oh-my-zsh-p10k
+
+# Using -Raw, read the file in full, as a single, multi-line string.
+#$configureScript = Get-Content -Raw ./configure.sh
+
+# !! The \-escaping is needed up to PowerShell 7.2.x
+#wsl bash -c ($configureScript -replace '"', '\"')
