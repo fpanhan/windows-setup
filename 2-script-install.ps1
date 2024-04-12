@@ -38,7 +38,7 @@ $apps = @(
 	#@{name = "Brave.Brave" },
 	@{name = "voidtools.Everything" },
 	@{name = "Mythicsoft.AgentRansack" },
-	@{name = "Toinane.Colorpicker" },
+	#@{name = "Toinane.Colorpicker" },
 	@{name = "IrfanSkiljan.IrfanView" },
 	@{name = "IrfanSkiljan.IrfanView.PlugIns" },
 	@{name = "Adobe.Acrobat.Reader.64-bit" },
@@ -87,7 +87,6 @@ Foreach ($app in $apps) {
 	else {
 		Write-Host "Skipping: " $app.name " (already installed)"
 	}
-	Start-Sleep -s 1
 }
 
 $windowsfeature = @(
@@ -136,8 +135,6 @@ Foreach ($wf in $windowsfeature) {
 		Write-Host "Installing" $wf.name "..."
 		Enable-WindowsOptionalFeature -Online -FeatureName $wf.name -All -NoRestart
 	}
-	
-	Start-Sleep -s 1
 }
 
 Write-Output "Update all installed apps"

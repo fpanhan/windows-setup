@@ -23,17 +23,17 @@ $ProgressPreference = "SilentlyContinue" # Hide progressbar
 Write-Output  "Executing Install script..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/2-script-install.ps1"))
 
-Start-Sleep -s 5
+Start-Sleep -s 2
 
 Write-Output  "Executing configuring script..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/2.1-configuring.ps1"))
 
-Start-Sleep -s 5
+Start-Sleep -s 2
 
 Write-Output  "Executing Customization script..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/3-customizations.ps11"))
 
-Start-Sleep -s 5
+Start-Sleep -s 2
 
 Write-Output  "Executing decrapfy Windows script..."
 Set-ExecutionPolicy Bypass -Scope Process -Force; Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/4-decrapfy.ps1"))
@@ -51,7 +51,7 @@ Write-Host " minute(s) and " -ForegroundColor Green -NoNewline
 Write-Host "$secDif" -ForegroundColor Red -NoNewline
 Write-Host " second(s)!" -ForegroundColor Green
 
-Start-Sleep -s 5
+Start-Sleep -s 2
 Write-Output  "Restarting computer..."
 
 
