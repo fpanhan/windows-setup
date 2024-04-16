@@ -6,6 +6,10 @@
 
 **WARNING:** I do **NOT** take responsibility for what may happen to your system! Run scripts at your own risk!
 
+## Goals
+
+These scripts are intended to configure Windows from a new installation.
+
 ## Usage
 
 Open powershell command with administrative rights<br>
