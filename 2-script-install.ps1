@@ -70,7 +70,7 @@ $apps = @(
 	@{name = "Chocolatey.Chocolatey" },
 	@{name = "Microsoft.WindowsTerminal" },
 	@{name = "Notepad++.Notepad++" },
-	@{name = "OpenJS.NodeJS" },
+	#@{name = "OpenJS.NodeJS" },
 	#@{name = "PostgreSQL.PostgreSQL" },
 	#@{name = "dbeaver.dbeaver" },
 	#@{name = "Zoom.Zoom" },
@@ -78,10 +78,10 @@ $apps = @(
 );
 
 Foreach ($app in $apps) {
-	$listApp = winget list --exact -q $app.name
+	$listApp = winget list --exact --query $app.name
 	if (![string]::Join("", $listApp).Contains($app.name)) {
 		Write-Host "Installing: " $app.name
-		winget install -e -h --accept-source-agreements --accept-package-agreements --id $app.name
+		winget install --exact --silent --accept-source-agreements --accept-package-agreements --id $app.name --source winget
 	}
 	else {
 		Write-Host "Skipping: " $app.name -NoNewline
