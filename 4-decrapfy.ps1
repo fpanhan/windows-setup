@@ -3,8 +3,8 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Start-Process powershell.exe "-NoProfile -ExecutionPolicy Bypass -File `"$PSCommandPath`"" -Verb RunAs;
 	Exit
 }
-
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/modules/Win10.psm1" -OutFile $PSScriptRoot\modules\Win10.psm1
+[string]$module = "$PSScriptRoot\modules\Win10.psm1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/modules/Win10.psm1" -OutFile $module
 
 Import-Module –Name $PSScriptRoot\modules\Win10
 
@@ -105,7 +105,13 @@ $tweaks = @(
 )
 
 Foreach ($tweak in $tweaks) {
+	Write-Host "Doing tweak: " -NoNewline
+	Write-Host $tweak.name -ForegroundColor Green
 	Invoke-Expression $tweak.name;
+}
+
+If (Test-Path $module) {
+    Remove-Item $module
 }
 
 # Prevents Apps from re-installing
