@@ -4,30 +4,72 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Exit
 }
 
-Write-Information "Downloading and installing WinGet and its dependencies..."
-if (!(Get-AppPackage -AllUsers).Name -like "*Microsoft.VCLibs*") {
-	if (!(Test-Path "Microsoft.VCLibs.x64.14.00.Desktop.appx")) {
-		Invoke-WebRequest -Uri https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx -OutFile Microsoft.VCLibs.x64.14.00.Desktop.appx
-	}
+Write-Host "Executing prereq"
+Write-Host "Downloading and installing WinGet and its dependencies if needed..."
+
+try
+{
+	winget --version
+	Write-Host "WinGet command present"
+}
+catch
+{
+	Write-Host "Checking prerequisites and updating WinGet..."
 	
-	Add-AppxPackage Microsoft.VCLibs.x64.14.00.Desktop.appx
+	# Test if Microsoft.UI.Xaml.2.7 is present, if not then install
+	try {
+		$package = Get-AppxPackage -Name "Microsoft.UI.Xaml.2.7"
+		if ($package)
+		{
+			Write-Host "Microsoft.UI.Xaml.2.7 is installed."
+		}
+		else
+		{
+			Write-Host "Installing Microsoft.UI.Xaml.2.7..."
+			Invoke-WebRequest `
+				-URI https://www.nuget.org/api/v2/package/Microsoft.UI.Xaml/2.7.3 `
+				-OutFile xaml.zip -UseBasicParsing
+			New-Item -ItemType Directory -Path xaml
+			Expand-Archive -Path xaml.zip -DestinationPath xaml
+			Add-AppxPackage -Path "xaml\tools\AppX\x64\Release\Microsoft.UI.Xaml.2.7.appx"
+			Remove-Item xaml.zip
+			Remove-Item xaml -Recurse
+		}
+	}
+	catch
+	{
+		Write-Host "An error occurred: $($_.Exception.Message)"
+	}
+
+	# Update Microsoft.VCLibs.140.00.UWPDesktop
+	Write-Host "Updating Microsoft.VCLibs.140.00.UWPDesktop..."
+	Invoke-WebRequest `
+		-URI https://aka.ms/Microsoft.VCLibs.x64.14.00.Desktop.appx `
+		-OutFile UWPDesktop.appx -UseBasicParsing
+	Add-AppxPackage UWPDesktop.appx
+	Remove-Item UWPDesktop.appx
+
+	# Install latest version of WinGet
+	$apiUrl = "https://api.github.com/repos/microsoft/winget-cli/releases/latest"
+	$downloadUrl = $(Invoke-RestMethod $apiUrl).assets.browser_download_url |
+		Where-Object {$_.EndsWith(".msixbundle")}
+		Invoke-WebRequest -URI $downloadUrl -OutFile winget.msixbundle -UseBasicParsing
+		Add-AppxPackage winget.msixbundle
+		Remove-Item winget.msixbundle
 }
 
-if (!(Get-AppPackage -AllUsers).Name -like "*Microsoft.UI.Xaml*") {
-	if (!(Test-Path "Microsoft.UI.Xaml.2.7.x64.appx")) {
-		Invoke-WebRequest -Uri https://github.com/microsoft/microsoft-ui-xaml/releases/download/v2.7.3/Microsoft.UI.Xaml.2.7.x64.appx -OutFile Microsoft.UI.Xaml.2.7.x64.appx
-	}
-	
-	Add-AppxPackage Microsoft.UI.Xaml.2.7.x64.appx
+<#
+try
+{
+	choco --version
+	Write-Host "Chocolatey command present"
 }
-
-if (!(Get-AppxPackage -Name Microsoft.DesktopAppInstaller)) {
-	if (!(Test-Path "Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle")) {
-		Invoke-WebRequest -Uri https://aka.ms/getwinget -OutFile Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
-	}
-	
-	Add-AppxPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe.msixbundle
+catch
+{
+	[System.Net.ServicePointManager]::SecurityProtocol = [System.Net.ServicePointManager]::SecurityProtocol -bor 3072;
+	Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://community.chocolatey.org/install.ps1"))
 }
+#>
 
 Write-Output "Installing Apps"
 $apps = @(

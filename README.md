@@ -8,13 +8,24 @@
 
 ## Goals
 
-These scripts are intended to configure Windows from a new installation.
+These scripts are intended to configure Windows from a new installation with my personal configuration.
 
 ## Usage
 
-Open powershell command with administrative rights<br>
-1. Set-ExecutionPolicy Bypass -Scope Process -Force;
-2. Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/1-bootstrap.ps1"))
+If you want to execute remote<br>
+1. Open powershell command with administrative rights.
+2. Set-ExecutionPolicy Bypass -Scope Process -Force;
+3. Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/1-bootstrap.ps1"))
+
+If you want to execute locally<br>
+1. Clone or download this repo.
+2. Open powershell command with administrative rights.
+3. Navigate to the correct directory.
+4. Set-ExecutionPolicy Unrestricted -Scope Process -Force;
+5. C:\temp\windows-setup\2-script-install.ps1
+6. C:\temp\windows-setup\2.1-configuring.ps1
+7. C:\temp\windows-setup\3-customizations.ps1
+8. C:\temp\windows-setup\4-decrapfy.ps1
 
 ## Meslo Font
 
@@ -26,4 +37,4 @@ FiraCode on [tonsky's repo](https://github.com/tonsky/FiraCode)
 
 ## Credits
 
-Thank you to [valdecircarvalho](https://github.com/valdecircarvalho/), [Sycnex](https://github.com/Sycnex)
+Thank you to [valdecircarvalho](https://github.com/valdecircarvalho), [Sycnex](https://github.com/Sycnex), [Disassembler0](https://github.com/Disassembler0)
