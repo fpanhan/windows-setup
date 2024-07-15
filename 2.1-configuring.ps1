@@ -47,8 +47,8 @@ finally {
 Write-Host "Installing nerd-fonts..."
 choco feature enable -n=allowGlobalConfirmation
 
-choco install -y nerd-fonts-hack --force
-choco install -y nerd-fonts-firacode --force
-choco install -y nerd-fonts-meslo --force
+choco install -y nerd-fonts-hack
+choco install -y nerd-fonts-firacode
+choco install -y nerd-fonts-meslo
 
 choco feature disable -n=allowGlobalConfirmation
