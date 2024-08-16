@@ -71,7 +71,7 @@ $fontsSource = @(
 
 
 Foreach ($fs in $fontsSource) {
-	Write-Host "Downloading font " $fs.URL "..."
+	Write-Host "Downloading font "$fs.URL"..."
 
 	try {
 		Invoke-WebRequest -Uri $fs.URL -OutFile $tempFolder
@@ -80,14 +80,14 @@ Foreach ($fs in $fontsSource) {
 		Write-Host "An error occurred while downloading fonts: $_"
 	}
 	finally {
-		Write-Host "Download fonts completed."
+		Write-Host "Download font "$fs.URL" completed."
 	}
 }
 
 Get-ChildItem -Path $source -Include "*.ttf","*.ttc","*.otf" -Recurse | ForEach {
     If (-not(Test-Path "C:\Windows\Fonts\$($_.Name)")) {
         $font = "$tempFolder\$($_.Name)"
-		Write-Host $font
+		#Write-Host $font
         Copy-Item $($_.FullName) -Destination $tempFolder
         $destination.CopyHere($font,0x10)
         Remove-Item $font -Force
