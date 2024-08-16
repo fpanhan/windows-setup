@@ -44,11 +44,52 @@ finally {
 	Write-Host "Download Windows Terminal profile completed."
 }
 
-Write-Host "Installing nerd-fonts..."
-choco feature enable -n=allowGlobalConfirmation
+Write-Host "Installing fonts..."
+#choco feature enable -n=allowGlobalConfirmation
+#choco install -y nerd-fonts-hack
+#choco install -y nerd-fonts-firacode
+#choco install -y nerd-fonts-meslo
+#choco feature disable -n=allowGlobalConfirmation
 
-choco install -y nerd-fonts-hack
-choco install -y nerd-fonts-firacode
-choco install -y nerd-fonts-meslo
+$destination = (New-Object -ComObject Shell.Application).Namespace(0x14)
+$TempFolder  = "C:\Windows\Temp\Fonts"
 
-choco feature disable -n=allowGlobalConfirmation
+New-Item $tempFolder -Type Directory -Force | Out-Null
+
+$fontsSource = @(
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/FiraCode/FiraCode-Bold.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/FiraCode/FiraCode-Light.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/FiraCode/FiraCode-Medium.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/FiraCode/FiraCode-Regular.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/FiraCode/FiraCode-Retina.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/FiraCode/FiraCode-SemiBold.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/Meslo/MesloLGLNerdFont-Bold.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/Meslo/MesloLGLNerdFont-BoldItalic.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/Meslo/MesloLGLNerdFont-Italic.ttf"},
+	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/Meslo/MesloLGLNerdFont-Regular.ttf"}
+)
+
+
+Foreach ($fs in $fontsSource) {
+	Write-Host "Downloading font " $fs.URL "..."
+
+	try {
+		Invoke-WebRequest -Uri $fs.URL -OutFile $tempFolder
+	}
+	catch {
+		Write-Host "An error occurred while downloading fonts: $_"
+	}
+	finally {
+		Write-Host "Download fonts completed."
+	}
+}
+
+Get-ChildItem -Path $source -Include "*.ttf","*.ttc","*.otf" -Recurse | ForEach {
+    If (-not(Test-Path "C:\Windows\Fonts\$($_.Name)")) {
+        $font = "$tempFolder\$($_.Name)"
+		Write-Host $font
+        Copy-Item $($_.FullName) -Destination $tempFolder
+        $destination.CopyHere($font,0x10)
+        Remove-Item $font -Force
+    }
+}
