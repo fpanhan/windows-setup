@@ -122,13 +122,16 @@ Foreach ($app in $apps) {
 	$listApp = winget list --disable-interactivity --ignore-warnings --exact --query $app.name
 	if (![string]::Join("", $listApp).Contains($app.name)) {
 		Write-Host "Installing: " $app.name
-		winget install --exact --silent --accept-source-agreements --accept-package-agreements --source winget --id $app.name
+		winget install --exact --silent --accept-source-agreements --accept-package-agreements --id $app.name
 	}
 	else {
 		Write-Host "Skipping: " $app.name -NoNewline
 		Write-Host " (already installed)" -ForegroundColor Green
 	}
 }
+
+Write-Output "Installing Scoop"
+Invoke-Expression "& {$(irm get.scoop.sh)} -RunAsAdmin"
 
 $windowsfeature = @(
 	@{name = "NetFX3"},

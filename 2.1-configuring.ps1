@@ -11,16 +11,56 @@ if (Test-Path $PROFILE) {
 
 $templateProfile = @'
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\jandedobbeleer.omp.json" | Invoke-Expression
-Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+if (!(Get-Module -ListAvailable -Name Terminal-Icons)) {
+    Install-Module -Name Terminal-Icons -Repository PSGallery -Force -SkipPublisherCheck
+}
+if (!(Get-Module -ListAvailable -Name PSReadLine)) {
+    Install-Module -Name PSReadLine -Force -SkipPublisherCheck
+}
+Import-Module -Name Terminal-Icons -Force
+Set-PSReadLineOption -PredictionSource History
+Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineOption -EditMode Windows
+Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
+Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
+Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
+try
+{
+	choco --version
+	Write-Host "Chocolatey command present"
+	Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+}
+catch
+{
+	Write-Host "Chocolatey doesn't exist" -ForegroundColor Yellow
+}
+function touch ($command) {
+    New-Item -Path $command -ItemType File | Out-Null | Write-Host Created $command
+}
+function rm ($command) {
+    Remove-Item $command -Recurse | Write-Host Removed $command
+}
+function mcd ($command) {
+    mkdir $command | cd $command
+}
+function npp() {
+    Start notepad++
+}
+function help() {
+    Write-Host "Custom functions created by Me" -ForegroundColor Green
+	Write-Host "   ‣ touch - creates new file"
+	Write-Host "   ‣ rm - removes file and directory"
+	Write-Host "   ‣ mcd - creates a directory and enters it, a combination of mkdir and cd"
+    Write-Host "   ‣ npp - start Notepad++"
+}
 '@
 
-if (!(Test-Path -Path $PROFILE ))
+if (!(Test-Path -Path $PROFILE))
 {
-	Write-Host "Configuring oh-my-posh..."
+	Write-Host "Configuring profile..."
 	New-Item -Type File -Path $PROFILE -Force
 	Set-Content -Path $PROFILE -Value $templateProfile -Force
 }
-
 
 Write-Host "Creating Windows Terminal profile..."
 [string]$windowsTerminalFolderName = Get-ChildItem -Recurse "$env:LocalAppData\Packages\" | Where-Object {$_.Name -like "Microsoft.WindowsTerminal*" } | Select $_.Name
@@ -44,13 +84,20 @@ finally {
 	Write-Host "Download Windows Terminal profile completed."
 }
 
-Write-Host "Installing fonts..."
-#choco feature enable -n=allowGlobalConfirmation
-#choco install -y nerd-fonts-hack
-#choco install -y nerd-fonts-firacode
-#choco install -y nerd-fonts-meslo
-#choco feature disable -n=allowGlobalConfirmation
-
+Write-Host "Installing fonts via oh-my-posh..."
+oh-my-posh font install meslo
+oh-my-posh font install firacode
+oh-my-posh font install cascadiacode
+<#
+Write-Host "Installing fonts via chocolatey..."
+choco feature enable -n=allowGlobalConfirmation
+choco install -y nerd-fonts-hack
+choco install -y nerd-fonts-firacode
+choco install -y nerd-fonts-meslo
+choco install -y nerd-fonts-cascadiacode
+choco feature disable -n=allowGlobalConfirmation
+#>
+<#
 $destination = (New-Object -ComObject Shell.Application).Namespace(0x14)
 $TempFolder  = "C:\Windows\Temp\Fonts"
 
@@ -93,3 +140,4 @@ Get-ChildItem -Path $source -Include "*.ttf","*.ttc","*.otf" -Recurse | ForEach 
         Remove-Item $font -Force
     }
 }
+#>
