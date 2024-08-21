@@ -5,8 +5,8 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 }
 
 Write-Host "Creating Powershell profile..."
-if (Test-Path $PROFILE) {
-	Remove-Item -Path $PROFILE -Force
+if (Test-Path -Path $PROFILE.AllUsersAllHosts) {
+	Remove-Item -Path $PROFILE.AllUsersAllHosts -Force
 }
 
 $templateProfile = @'
@@ -55,15 +55,15 @@ function help() {
 }
 '@
 
-if (!(Test-Path -Path $PROFILE))
+if (!(Test-Path -Path $PROFILE.AllUsersAllHosts))
 {
 	Write-Host "Configuring profile..."
-	New-Item -Type File -Path $PROFILE -Force
-	Set-Content -Path $PROFILE -Value $templateProfile -Force
+	New-Item -Type File -Path $PROFILE.AllUsersAllHosts -Force
+	Set-Content -Path $PROFILE.AllUsersAllHosts -Value $templateProfile -Force
 }
 
 Write-Host "Creating Windows Terminal profile..."
-[string]$windowsTerminalFolderName = Get-ChildItem -Recurse "$env:LocalAppData\Packages\" | Where-Object {$_.Name -like "Microsoft.WindowsTerminal*" } | Select $_.Name
+[string]$windowsTerminalFolderName = Get-ChildItem -Recurse "$env:LocalAppData\Packages\" | Where-Object {$_.Name -like "Microsoft.WindowsTerminal*" } | Select-Object $_.Name
 
 [string]$windowsTerminalPath = "$env:LocalAppData\Packages\$windowsTerminalFolderName\LocalState"
 [string]$windowsTerminalSettings = "$windowsTerminalPath\settings.json"
@@ -115,7 +115,6 @@ $fontsSource = @(
 	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/Meslo/MesloLGLNerdFont-Italic.ttf"},
 	@{URL = "https://github.com/fpanhan/windows-setup/raw/main/fonts/Meslo/MesloLGLNerdFont-Regular.ttf"}
 )
-
 
 Foreach ($fs in $fontsSource) {
 	Write-Host "Downloading font "$fs.URL"..."
