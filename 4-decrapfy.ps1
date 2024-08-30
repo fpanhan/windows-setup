@@ -4,7 +4,7 @@ If (!([Security.Principal.WindowsPrincipal][Security.Principal.WindowsIdentity]:
 	Exit
 }
 [string]$module = "$PSScriptRoot\modules\Win10.psm1"
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/Disassembler0/Win10-Initial-Setup-Script/master/Win10.psm1" -OutFile $module
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/modules/Win10.psm1" -OutFile $module
 
 Import-Module –Name $PSScriptRoot\modules\Win10
 
