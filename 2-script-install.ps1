@@ -130,8 +130,8 @@ Foreach ($app in $apps) {
 	}
 }
 
-Write-Output "Installing Scoop"
-Invoke-Expression "& {$(irm get.scoop.sh)} -RunAsAdmin"
+#Write-Output "Installing Scoop"
+#Invoke-Expression "& {$(irm get.scoop.sh)} -RunAsAdmin"
 
 $windowsfeature = @(
 	@{name = "NetFX3"},
