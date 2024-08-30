@@ -88,7 +88,7 @@ Write-Host "Installing fonts via oh-my-posh..."
 oh-my-posh font install meslo
 oh-my-posh font install firacode
 oh-my-posh font install cascadiacode
-<#
+
 Write-Host "Installing fonts via chocolatey..."
 choco feature enable -n=allowGlobalConfirmation
 choco install -y nerd-fonts-hack
@@ -96,7 +96,7 @@ choco install -y nerd-fonts-firacode
 choco install -y nerd-fonts-meslo
 choco install -y nerd-fonts-cascadiacode
 choco feature disable -n=allowGlobalConfirmation
-#>
+
 <#
 $destination = (New-Object -ComObject Shell.Application).Namespace(0x14)
 $TempFolder  = "C:\Windows\Temp\Fonts"
