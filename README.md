@@ -1,6 +1,6 @@
 <div align = "center">
 
-<h1><a href="https://github.com/fpanhan/windows-setup">win2k</a></h1>
+<h1><a href="https://github.com/fpanhan/windows-setup">windows-setup</a></h1>
 
 <a href="https://github.com/fpanhan/windows-setup/blob/main/LICENSE">
 <img alt="License" src="https://img.shields.io/github/license/fpanhan/windows-setup?style=flat&color=eee&label="> </a>
@@ -23,8 +23,7 @@
 <a href="https://github.com/fpanhan/windows-setup/pulse">
 <img alt="Last Updated" src="https://img.shields.io/github/last-commit/fpanhan/windows-setup?style=flat&color=e06c75&label="> </a>
 
-
-
+</div>
 
 ## Disclaimer
 
@@ -37,11 +36,13 @@ These scripts are intended to configure Windows from a new installation (new/emp
 ## Usage
 
 If you want to execute remote<br>
+
 1. Open powershell command with administrative rights.
 2. Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 3. Invoke-Expression ((New-Object System.Net.WebClient).DownloadString("https://raw.githubusercontent.com/fpanhan/windows-setup/main/1-bootstrap.ps1"))
 
 If you want to execute locally<br>
+
 1. Clone or download this repo.
 2. Open powershell command with administrative rights.
 3. Navigate to the correct directory.
@@ -70,5 +71,3 @@ FiraCode on [tonsky's repo](https://github.com/tonsky/FiraCode)
 ## Credits
 
 Thank you to [valdecircarvalho](https://github.com/valdecircarvalho), [Sycnex](https://github.com/Sycnex), [Disassembler0](https://github.com/Disassembler0)
-
-</div>
