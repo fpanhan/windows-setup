@@ -56,8 +56,8 @@ If you want to execute locally<br>
 
 Allow Insecure Localhost link
 
-Edge: edge://flags/#allow-insecure-localhost
-Chrome: chrome://flags/#allow-insecure-localhost
+Edge: edge://flags/#allow-insecure-localhost<br>
+Chrome: chrome://flags/#allow-insecure-localhost<br>
 Firefox: about:config and then search for "allowInsecureFromHTTPS"
 
 ## Meslo Font
