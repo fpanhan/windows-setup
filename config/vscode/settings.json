@@ -1,0 +1,108 @@
+{
+	"http.proxy": "",
+	"http.proxyStrictSSL": false,
+	"window.menuBarVisibility": "compact",
+	"omnisharp.enableRoslynAnalyzers": true,
+	"omnisharp.useEditorFormattingSettings": false,
+	"omnisharp.organizeImportsOnFormat": true,
+	"omnisharp.enableEditorConfigSupport": true,
+	"csharp.semanticHighlighting.enabled": true,
+	"git.confirmSync": false,
+	"git.autofetch": true,
+	"gitlens.advanced.messages": {
+		"suppressCommitHasNoPreviousCommitWarning": true
+	},
+	"editor.fontFamily": "FiraCode Nerd Font, Dank Monk",
+	"editor.fontSize": 14,
+	"editor.lineHeight": 1,
+	"editor.tabSize": 2,
+	"editor.lineNumbers": "relative",
+	"editor.rulers": [
+		78,
+		80,
+		120
+	],
+	"explorer.confirmDelete": false,
+	"editor.minimap.enabled": false,
+	"editor.renderWhitespace": "boundary",
+	"editor.renderControlCharacters": true,
+	"editor.acceptSuggestionOnEnter": "smart",
+	"editor.tabSize": 2,
+	"editor.wordWrapColumn": 120,
+	"editor.wordWrap": "wordWrapColumn",
+	"editor.fontLigatures": true,
+	"editor.dragAndDrop": false,
+	"editor.cursorSmoothCaretAnimation": "on",
+	"editor.bracketPairColorization.enabled": true,
+	"editor.smoothScrolling": true,
+	"editor.wordWrap": "on",
+	"editor.formatOnType": true,
+	"editor.formatOnSave": true,
+	"editor.defaultFormatter": "esbenp.prettier-vscode",
+	"editor.guides.bracketPairs": true,
+	"editor.inlineSuggest.showToolbar": "always",
+	"editor.inlineSuggest.enabled": true,
+	"explorer.experimental.fileNesting.enabled": true,
+	"explorer.confirmDragAndDrop": false,
+	"files.defaultLanguage": "markdown",
+	"files.associations": {
+		"*.mdx": "markdown"
+	},
+	"terminal.integrated.fontFamily": "MesloLGM Nerd Font Mono",
+	"terminal.integrated.smoothScrolling": true,
+	"terminal.integrated.fontSize": 14,
+	"terminal.integrated.automationProfile.windows": {
+		"path": "cmd",
+		"args": []
+	},
+	"terminal.integrated.defaultProfile.windows": "PowerShell",
+	"terminal.integrated.profiles.windows": {
+		"PowerShell": {
+			"source": "PowerShell",
+			"icon": "terminal-powershell"
+		},
+		"Command Prompt": {
+			"path": [
+				"${env:windir}\\Sysnative\\cmd.exe",
+				"${env:windir}\\System32\\cmd.exe"
+			],
+			"args": [],
+			"icon": "terminal-cmd"
+		}
+	},
+	"powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+	"powershell.codeFormatting.useConstantStrings": true,
+	"powershell.codeFormatting.useCorrectCasing": true,
+	"powershell.powerShellAdditionalExePaths": {
+		"PowerShell": "C:/Program Files/PowerShell/7/pwsh.exe"
+	},
+	"powershell.powerShellDefaultVersion": "PowerShell",
+	"workbench.iconTheme": "material-icon-theme",
+	"workbench.list.smoothScrolling": true,
+	"workbench.editor.wrapTabs": true,
+	"workbench.sideBar.location": "left",
+	"javascript.inlayHints.parameterNames.enabled": "all",
+	"typescript.inlayHints.parameterNames.enabled": "all",
+	"typescript.inlayHints.functionLikeReturnTypes.enabled": true,
+	"scm.defaultViewMode": "tree",
+	"search.exclude": {
+		"package-lock.json": true,
+		"yarn.lock": true
+	},
+	"eslint.options": {
+		"extensions": [
+			".ts",
+			".html"
+		]
+	},
+	"eslint.validate": [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact",
+		"html"
+	],
+	"files.trimTrailingWhitespace": true,
+	"files.insertFinalNewline": true,
+	"files.trimFinalNewlines": true
+}

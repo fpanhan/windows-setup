@@ -9,51 +9,23 @@ if (Test-Path -Path $PROFILE.AllUsersAllHosts) {
 	Remove-Item -Path $PROFILE.AllUsersAllHosts -Force
 }
 
-$templateProfile = @'
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\jandedobbeleer.omp.json" | Invoke-Expression
-if (!(Get-Module -ListAvailable -Name Terminal-Icons)) {
-    Install-Module -Name Terminal-Icons -Repository PSGallery -Force -SkipPublisherCheck
+Install-Module -Name Terminal-Icons -Repository PSGallery -Force -AllowClobber
+Install-Module -Name z -Force -AllowClobber
+Install-Module -Name PSReadLine -Force -SkipPublisherCheck -AllowClobber
+Install-Module -Name PSFzf -Force -AllowClobber
+
+Update-Module
+
+#PowerShell
+try {
+	Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/config/powershell/Profile.ps1" -OutFile "$PROFILE.AllUsersAllHosts"
 }
-if (!(Get-Module -ListAvailable -Name PSReadLine)) {
-    Install-Module -Name PSReadLine -Force -SkipPublisherCheck
+catch {
+	Write-Host "An error occurred while downloading Windows Powershell 7 profile: $_"
 }
-Import-Module -Name Terminal-Icons -Force
-Set-PSReadLineOption -PredictionSource History
-Set-PSReadLineOption -PredictionViewStyle ListView
-Set-PSReadLineOption -EditMode Windows
-Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
-Set-PSReadLineKeyHandler -Key UpArrow -Function HistorySearchBackward
-Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
-try
-{
-	choco --version
-	Write-Host "Chocolatey command present"
-	Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
+finally {
+	Write-Host "Download Windows Powershell 7 profile completed."
 }
-catch
-{
-	Write-Host "Chocolatey doesn't exist" -ForegroundColor Yellow
-}
-function touch ($command) {
-    New-Item -Path $command -ItemType File | Out-Null | Write-Host Created $command
-}
-function rm ($command) {
-    Remove-Item $command -Recurse | Write-Host Removed $command
-}
-function mcd ($command) {
-    mkdir $command | cd $command
-}
-function npp() {
-    Start notepad++
-}
-function help() {
-    Write-Host "Custom functions created by Me" -ForegroundColor Green
-	Write-Host "   ‣ touch - creates new file"
-	Write-Host "   ‣ rm - removes file and directory"
-	Write-Host "   ‣ mcd - creates a directory and enters it, a combination of mkdir and cd"
-    Write-Host "   ‣ npp - start Notepad++"
-}
-'@
 
 if (!(Test-Path -Path $PROFILE.AllUsersAllHosts))
 {
@@ -75,7 +47,7 @@ if (Test-Path $windowsTerminalPath) {
 }
 
 try {
-	Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/windows_terminal/settings.json" -OutFile $windowsTerminalSettings
+	Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/config/windows_terminal/settings.json" -OutFile $windowsTerminalSettings
 }
 catch {
 	Write-Host "An error occurred while downloading Windows Terminal profile: $_"
@@ -140,3 +112,56 @@ Get-ChildItem -Path $source -Include "*.ttf","*.ttc","*.otf" -Recurse | ForEach 
     }
 }
 #>
+
+
+Write-Host "Copying vscode settings..."
+try {
+	Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/config/vscode/settings.json" -OutFile "$env:AppData\Code\User\settings.json"
+}
+catch {
+	Write-Host "An error occurred while downloading vscode settings: $_"
+}
+finally {
+	Write-Host "Download vscode settings completed."
+}
+
+
+Write-Host "Installing vscode extensions..."
+
+# Formatting and Rules
+code --install-extension dbaeumer.vscode-eslint --force
+code --install-extension esbenp.prettier-vscode --force
+code --install-extension aaron-bond.better-comments --force
+
+# HTML and CSS
+code --install-extension formulahendry.auto-rename-tag --force
+code --install-extension naumovs.color-highlight --force
+code --install-extension anteprimorac.html-end-tag-labels --force
+
+# Git
+code --install-extension github.vscode-pull-request-github --force
+code --install-extension eamodio.gitlens-insiders --force
+
+# .NET
+code --install-extension ms-dotnettools.csharp --force
+code --install-extension visualstudioexptteam.vscodeintellicode --force
+
+# Test Runners
+code --install-extension ms-playwright.playwright --force
+
+# Markdown
+code --install-extension yzhang.markdown-all-in-one --force
+code --install-extension davidanson.vscode-markdownlint --force
+
+# Rest Client
+code --install-extension rangav.vscode-thunder-client --force
+
+# Miscellaneous
+code --install-extension github.copilot --force
+code --install-extension vscode-icons-team.vscode-icons --force
+
+
+code --install-extension ms-dotnettools.csharp --force
+code --install-extension ms-dotnettools.vscode-dotnet-runtime --force
+code --install-extension ms-vscode-remote.remote-containers --force
+code --install-extension ms-vscode.live-server --force

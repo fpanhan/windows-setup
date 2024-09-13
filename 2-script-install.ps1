@@ -15,7 +15,7 @@ try
 catch
 {
 	Write-Host "Checking prerequisites and updating WinGet..."
-	
+
 	# Test if Microsoft.UI.Xaml.2.7 is present, if not then install
 	try {
 		$package = Get-AppxPackage -Name "Microsoft.UI.Xaml.2.7"
@@ -95,7 +95,8 @@ $apps = @(
 	@{name = "Python.Python.3.12"},
 	@{name = "Python.Launcher"},
 	#@{name = "VSCodium.VSCodium"},
-	#@{name = "Microsoft.VisualStudioCode"},
+	@{name = "Microsoft.VisualStudioCode"},
+	@{name = "Microsoft.VisualStudioCode.CLI"},
 	@{name = "Microsoft.VisualStudio.2022.Professional"},
 	#@{name = "Microsoft.VisualStudio.2022.Community"},
 	#@{name = "Microsoft.VisualStudio.2022.Enterprise"},
@@ -151,12 +152,12 @@ $windowsfeature = @(
 	@{name = "Microsoft-Hyper-V-All"},
 	@{name = "Containers-DisposableClientVM"},
 	@{name = "Microsoft-Hyper-V-Tools-All"},
-	@{name = "Microsoft-Hyper-V"},  
+	@{name = "Microsoft-Hyper-V"},
 	@{name = "TelnetClient"},
 	@{name = "Windows-Defender-Default-Definitions"},
 	@{name = "Microsoft-Hyper-V-Management-PowerShell"},
 	@{name = "Microsoft-Hyper-V-Services"},
-	@{name = "Microsoft-Hyper-V-Hypervisor"},      
+	@{name = "Microsoft-Hyper-V-Hypervisor"},
 	@{name = "Microsoft-Hyper-V-Management-Clients"},
 	@{name = "Windows-Defender-ApplicationGuard"}
 	#@{name = "ClientForNFS-Infrastructure"},
