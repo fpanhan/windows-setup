@@ -27,15 +27,6 @@ finally {
 	Write-Host "Download Windows Powershell 7 profile completed."
 }
 
-
-
-if (!(Test-Path -Path $PROFILE.AllUsersAllHosts))
-{
-	Write-Host "Configuring profile..."
-	New-Item -Type File -Path $PROFILE.AllUsersAllHosts -Force
-	Set-Content -Path $PROFILE.AllUsersAllHosts -Value $templateProfile -Force
-}
-
 Write-Host "Creating Windows Terminal profile..."
 [string]$windowsTerminalFolderName = Get-ChildItem -Recurse "$env:LocalAppData\Packages\" | Where-Object {$_.Name -like "Microsoft.WindowsTerminal*" } | Select-Object $_.Name
 
