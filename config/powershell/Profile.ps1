@@ -82,11 +82,11 @@ function System-Update() {
     npm install npm -g
     npm update -g
     Write-Host "Updating chocolatey packs..." -ForegroundColor "Yellow"
-    choco upgrade -y "chocolatey";
-    choco upgrade -y all --execution-timeout 7200;
+    choco upgrade -y "chocolatey"
+    choco upgrade -y all --execution-timeout 7200
     Write-Host "Updating WSL packs..." -ForegroundColor "Yellow"
-    wsl sudo apt --yes update;
-    wsl sudo apt --yes upgrade;
+    wsl sudo apt --yes update
+    wsl sudo apt --yes upgrade
 }
 
 function Empty-RecycleBin {
