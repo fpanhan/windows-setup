@@ -157,3 +157,16 @@ $extensions = @(
 Foreach ($extension in $extensions) {
 	code --install-extension $extension.name --force
 }
+
+
+Write-Host "Copying Notepad++ settings..."
+try {
+	Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/config/notepad++/config.xml" -OutFile "$env:AppData\Notepad++\config.xml"
+	Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/main/config/notepad++/stylers.xml" -OutFile "$env:AppData\Notepad++\stylers.xml"
+}
+catch {
+	Write-Host "An error occurred while downloading Notepad++ settings: $_"
+}
+finally {
+	Write-Host "Download Notepad++ settings completed."
+}
