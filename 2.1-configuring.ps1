@@ -128,40 +128,29 @@ finally {
 
 Write-Host "Installing vscode extensions..."
 
-# Formatting and Rules
-code --install-extension dbaeumer.vscode-eslint --force
-code --install-extension esbenp.prettier-vscode --force
-code --install-extension aaron-bond.better-comments --force
+$extensions = @(
+	@{name = "dbaeumer.vscode-eslint"},
+	@{name = "esbenp.prettier-vscode"},
+	@{name = "aaron-bond.better-comments"},
+	@{name = "formulahendry.auto-rename-tag"},
+	@{name = "naumovs.color-highlight"},
+	@{name = "anteprimorac.html-end-tag-labels"},
+	@{name = "github.vscode-pull-request-github"},
+	@{name = "eamodio.gitlens-insiders"},
+	@{name = "ms-dotnettools.csharp"},
+	@{name = "visualstudioexptteam.vscodeintellicode"},
+	@{name = "ms-playwright.playwright"},
+	@{name = "yzhang.markdown-all-in-one"},
+	@{name = "davidanson.vscode-markdownlint"},
+	@{name = "rangav.vscode-thunder-client"},
+	@{name = "github.copilo"},
+	@{name = "vscode-icons-team.vscode-icons"},
+	@{name = "ms-dotnettools.csharp"},
+	@{name = "ms-dotnettools.vscode-dotnet-runtime"},
+	@{name = "ms-vscode-remote.remote-containers"},
+	@{name = "ms-vscode.live-server"}
+);
 
-# HTML and CSS
-code --install-extension formulahendry.auto-rename-tag --force
-code --install-extension naumovs.color-highlight --force
-code --install-extension anteprimorac.html-end-tag-labels --force
-
-# Git
-code --install-extension github.vscode-pull-request-github --force
-code --install-extension eamodio.gitlens-insiders --force
-
-# .NET
-code --install-extension ms-dotnettools.csharp --force
-code --install-extension visualstudioexptteam.vscodeintellicode --force
-
-# Test Runners
-code --install-extension ms-playwright.playwright --force
-
-# Markdown
-code --install-extension yzhang.markdown-all-in-one --force
-code --install-extension davidanson.vscode-markdownlint --force
-
-# Rest Client
-code --install-extension rangav.vscode-thunder-client --force
-
-# Miscellaneous
-code --install-extension github.copilot --force
-code --install-extension vscode-icons-team.vscode-icons --force
-
-
-code --install-extension ms-dotnettools.csharp --force
-code --install-extension ms-dotnettools.vscode-dotnet-runtime --force
-code --install-extension ms-vscode-remote.remote-containers --force
-code --install-extension ms-vscode.live-server --force
+Foreach ($extension in $extensions) {
+	code --install-extension $extension.name --force
+}
