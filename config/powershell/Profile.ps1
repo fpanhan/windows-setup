@@ -9,6 +9,9 @@ if (!(Get-Module -ListAvailable -Name PSReadLine)) {
 if (!(Get-Module -ListAvailable -Name Posh-Git)) {
     Install-Module -Name Posh-Git -Force -SkipPublisherCheck
 }
+if (!(Get-Module -ListAvailable -Name PsFZF)) {
+    Install-Module -Name PsFZF -Force -SkipPublisherCheck
+}
 if (!(Get-Module -ListAvailable -Name PSWindowsUpdate)) {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
     Install-Module PSWindowsUpdate -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
@@ -78,6 +81,12 @@ function System-Update() {
     Write-Host "Updating npm packs..." -ForegroundColor "Yellow"
     npm install npm -g
     npm update -g
+    Write-Host "Updating chocolatey packs..." -ForegroundColor "Yellow"
+    choco upgrade -y "chocolatey";
+    choco upgrade -y all --execution-timeout 7200;
+    Write-Host "Updating WSL packs..." -ForegroundColor "Yellow"
+    wsl sudo apt --yes update;
+    wsl sudo apt --yes upgrade;
 }
 
 function Empty-RecycleBin {
