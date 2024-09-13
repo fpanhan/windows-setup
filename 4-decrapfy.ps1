@@ -9,7 +9,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/fpanhan/windows-setup/
 Import-Module –Name $PSScriptRoot\modules\Win10
 
 $tweaks = @(
-    @{name = "DisableTelemetry"},
+	@{name = "DisableTelemetry"},
 	@{name = "DisableUWPBackgroundApps"},
 	@{name = "EnableUpdateMSProducts"},
 	@{name = "DisableUpdateRestart"},
@@ -135,11 +135,14 @@ foreach ($key in $cdm) {
 }
 
 New-FolderForced -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" "AutoDownload" 2
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore" -Name "AutoDownload" -Value 2
 
 # Prevents "Suggested Applications" returning
 New-FolderForced -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent"
-Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" "DisableWindowsConsumerFeatures" 1
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent" -Name "DisableWindowsConsumerFeatures" -Value 1
+
+# Turn Off Windows Narrator Hotkey: Enable: 1, Disable: 0
+Set-ItemProperty -Path "HKCU:\SOFTWARE\Microsoft\Narrator\NoRoam" -Name "WinEnterLaunchEnabled" -Value 0
 
 # This script removes all Start Menu Tiles from the .default user #
 Set-Content -Path 'C:\Users\Default\AppData\Local\Microsoft\Windows\Shell\DefaultLayouts.xml' -Value '<LayoutModificationTemplate xmlns:defaultlayout="http://schemas.microsoft.com/Start/2014/FullDefaultLayout" xmlns:start="http://schemas.microsoft.com/Start/2014/StartLayout" Version="1" xmlns="http://schemas.microsoft.com/Start/2014/LayoutModification">'
@@ -313,34 +316,34 @@ $LaunchTo = "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced"
 Set-ItemProperty $LaunchTo LaunchTo -Value 1
 
 
-#Stops edge from taking over as the default .PDF viewer    
+#Stops edge from taking over as the default .PDF viewer
 Write-Output "Stopping Edge from taking over as the default .PDF viewer"
 $NoPDF = "HKCR:\.pdf"
 $NoProgids = "HKCR:\.pdf\OpenWithProgids"
-$NoWithList = "HKCR:\.pdf\OpenWithList" 
+$NoWithList = "HKCR:\.pdf\OpenWithList"
 If (!(Get-ItemProperty $NoPDF  NoOpenWith)) {
-    New-ItemProperty $NoPDF NoOpenWith 
-}        
+    New-ItemProperty $NoPDF NoOpenWith
+}
 If (!(Get-ItemProperty $NoPDF  NoStaticDefaultVerb)) {
-    New-ItemProperty $NoPDF  NoStaticDefaultVerb 
-}        
+    New-ItemProperty $NoPDF  NoStaticDefaultVerb
+}
 If (!(Get-ItemProperty $NoProgids  NoOpenWith)) {
-    New-ItemProperty $NoProgids  NoOpenWith 
-}        
+    New-ItemProperty $NoProgids  NoOpenWith
+}
 If (!(Get-ItemProperty $NoProgids  NoStaticDefaultVerb)) {
-    New-ItemProperty $NoProgids  NoStaticDefaultVerb 
-}        
+    New-ItemProperty $NoProgids  NoStaticDefaultVerb
+}
 If (!(Get-ItemProperty $NoWithList  NoOpenWith)) {
     New-ItemProperty $NoWithList  NoOpenWith
-}        
-If (!(Get-ItemProperty $NoWithList  NoStaticDefaultVerb)) {
-    New-ItemProperty $NoWithList  NoStaticDefaultVerb 
 }
-		
+If (!(Get-ItemProperty $NoWithList  NoStaticDefaultVerb)) {
+    New-ItemProperty $NoWithList  NoStaticDefaultVerb
+}
+
 #Appends an underscore '_' to the Registry key for Edge
 $Edge = "HKCR:\AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_"
 If (Test-Path $Edge) {
-    Set-Item $Edge AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_ 
+    Set-Item $Edge AppXd4nrz8ff68srnhf9t5a8sbjyar1cr723_
 }
 
 #Disable Last Used Files and Folders View
@@ -350,9 +353,58 @@ $Keys = @(
     # Deactivate showing of last used folders
     "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\HomeFolderDesktop\NameSpace\DelegateFolders\{3936E9E4-D92C-4EEE-A85A-BC16D5EA0819}"
 )
-	
+
 #This writes the output of each key it is removing and also removes the keys listed above.
 ForEach ($Key in $Keys) {
     Write-Output "Removing $Key from registry"
     Remove-Item $Key -Recurse
 }
+
+
+#Windows Update & Application Updates
+Write-Host "Configuring Windows Update..." -ForegroundColor "Yellow"
+
+# Disable automatic reboot after install: Enable: 1, Disable: 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "IsExpedited" -Value 0
+
+# Disable restart required notifications: Enable: 1, Disable: 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "RestartNotificationsAllowed2" -Value 0
+
+# Disable updates over metered connections: Enable: 1, Disable: 0
+Set-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings" -Name "AllowAutoWindowsUpdateDownloadOverMeteredNetwork" -Value 0
+
+
+# Disk Cleanup (CleanMgr.exe)
+Write-Host "Configuring Disk Cleanup..." -ForegroundColor "Yellow"
+
+$diskCleanupRegPath = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches\"
+
+# Cleanup Files by Group: 0=Disabled, 2=Enabled
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "BranchCache"                                  ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Downloaded Program Files"                     ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Internet Cache Files"                         ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Offline Pages Files"                          ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Old ChkDsk Files"                             ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Previous Installations"                       ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Recycle Bin"                                  ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "RetailDemo Offline Content"                   ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Service Pack Cleanup"                         ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Setup Log Files"                              ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "System error memory dump files"               ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "System error minidump files"                  ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Temporary Files"                              ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Temporary Setup Files"                        ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Thumbnail Cache"                              ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Update Cleanup"                               ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Upgrade Discarded Files"                      ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "User file versions"                           ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows Defender"                             ) "StateFlags6174" 2 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows Error Reporting Archive Files"        ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows Error Reporting Queue Files"          ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows Error Reporting System Archive Files" ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows Error Reporting System Queue Files"   ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows Error Reporting Temp Files"           ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows ESD installation files"               ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+Set-ItemProperty $(Join-Path $diskCleanupRegPath "Windows Upgrade Log Files"                    ) "StateFlags6174" 0 -ErrorAction SilentlyContinue
+
+Remove-Variable diskCleanupRegPath

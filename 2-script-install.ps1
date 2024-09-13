@@ -96,7 +96,7 @@ $apps = @(
 	@{name = "Python.Launcher"},
 	#@{name = "VSCodium.VSCodium"},
 	@{name = "Microsoft.VisualStudioCode"},
-	@{name = "Microsoft.VisualStudioCode.CLI"},
+	#@{name = "Microsoft.VisualStudioCode.CLI"},
 	@{name = "Microsoft.VisualStudio.2022.Professional"},
 	#@{name = "Microsoft.VisualStudio.2022.Community"},
 	#@{name = "Microsoft.VisualStudio.2022.Enterprise"},
@@ -177,6 +177,7 @@ Foreach ($wf in $windowsfeature) {
 	}
 }
 
+
 Write-Output "Update all installed apps"
 winget upgrade --all --force --disable-interactivity --accept-source-agreements --accept-package-agreements --include-unknown
 
@@ -199,6 +200,8 @@ if (!($ubuntu -like "Ubuntu*"))
 
 # Restore the previous encoding
 [Console]::OutputEncoding = $prev
+
+
 
 wsl --setdefault Ubuntu
 & dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart

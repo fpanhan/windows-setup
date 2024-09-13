@@ -27,6 +27,8 @@ finally {
 	Write-Host "Download Windows Powershell 7 profile completed."
 }
 
+
+
 if (!(Test-Path -Path $PROFILE.AllUsersAllHosts))
 {
 	Write-Host "Configuring profile..."
@@ -55,6 +57,8 @@ catch {
 finally {
 	Write-Host "Download Windows Terminal profile completed."
 }
+
+
 
 Write-Host "Installing fonts via oh-my-posh..."
 oh-my-posh font install meslo
@@ -124,7 +128,6 @@ catch {
 finally {
 	Write-Host "Download vscode settings completed."
 }
-
 
 Write-Host "Installing vscode extensions..."
 
