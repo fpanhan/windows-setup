@@ -94,6 +94,12 @@ function Empty-RecycleBin {
     $RecBin.Items() | %{Remove-Item $_.Path -Recurse -Confirm:$false}
 }
 
+function Git-Prune {
+    git stash
+    git pull -f
+    git prune origin
+}
+
 # Extract a .zip file
 function Unzip-File {
     <#
@@ -171,6 +177,7 @@ function help() {
     Write-Host "   ‣ rm - removes file and directory"
     Write-Host "   ‣ mcd - creates a directory and enters it, a combination of mkdir and cd"
     Write-Host "   ‣ npp - start Notepad++"
+    Write-Host "   ‣ Git-Prune - Git Prune"
     Write-Host "   ‣ changeTheme - change to random theme of oh-my-posh"
     Write-Host "   ‣ System-Update - Update NPM, and their installed packages"
     Write-Host "   ‣ Empty-RecycleBin - Empty the Recycle Bin on all drives"
