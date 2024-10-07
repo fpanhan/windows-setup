@@ -37,7 +37,7 @@ catch
 	Write-Host "Chocolatey doesn't exist" -ForegroundColor Yellow
 }
 
-function changeTheme() {
+function changeTheme () {
     $themes = "$env:LocalAppData\Programs\oh-my-posh\themes\"
     $theme = $args[0]
     if($null -eq $theme) {
@@ -49,11 +49,11 @@ function changeTheme() {
     oh-my-posh init pwsh --config "$themes$theme" | Invoke-Expression
 }
 
-function touch($command) {
+function touch ($command) {
     New-Item -Path $command -ItemType File | Out-Null | Write-Host Created $command
 }
 
-function rm($command) {
+function rm ($command) {
     Remove-Item $command -Recurse | Write-Host Removed $command
 }
 
@@ -84,6 +84,8 @@ function System-Update() {
     Write-Host "Updating chocolatey packs..." -ForegroundColor "Yellow"
     choco upgrade -y "chocolatey"
     choco upgrade -y all --execution-timeout 7200
+    Write-Host "Updating oh-my-posh..." -ForegroundColor "Yellow"
+    oh-my-posh upgrade
     Write-Host "Updating WSL packs..." -ForegroundColor "Yellow"
     wsl sudo apt --yes update
     wsl sudo apt --yes upgrade
