@@ -14,7 +14,11 @@ if (!(Get-Module -ListAvailable -Name PsFZF)) {
 }
 if (!(Get-Module -ListAvailable -Name PSWindowsUpdate)) {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
-    Install-Module PSWindowsUpdate -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+    Install-Module PSWindowsUpdate -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+}
+if (!(Get-Module -ListAvailable -Name Terminal-Icons)) {
+    Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
+    Install-Module -Name Terminal-Icons -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
 }
 
 Set-PSReadLineOption -BellStyle None
