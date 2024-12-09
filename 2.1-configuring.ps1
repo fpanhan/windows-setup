@@ -9,10 +9,10 @@ if (Test-Path -Path $PROFILE.AllUsersAllHosts) {
 	Remove-Item -Path $PROFILE.AllUsersAllHosts -Force
 }
 
-Install-Module -Name Terminal-Icons -Repository PSGallery -Force -AllowClobber
-Install-Module -Name z -Force -AllowClobber
-Install-Module -Name PSReadLine -Force -SkipPublisherCheck -AllowClobber
-Install-Module -Name PSFzf -Force -AllowClobber
+Install-Module -Name Terminal-Icons -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+Install-Module -Name z -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+Install-Module -Name PSReadLine -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+Install-Module -Name PSFzf -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
 
 Update-Module
 
