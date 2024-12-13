@@ -1,24 +1,24 @@
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls13
+(New-Object -TypeName System.Net.WebClient).Proxy.Credentials = [System.Net.CredentialCache]::DefaultNetworkCredentials
+
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH\jandedobbeleer.omp.json" | Invoke-Expression
 
-if (!(Get-Module -ListAvailable -Name Terminal-Icons)) {
-    Install-Module -Name Terminal-Icons -Repository PSGallery -Force -SkipPublisherCheck
-}
 if (!(Get-Module -ListAvailable -Name PSReadLine)) {
-    Install-Module -Name PSReadLine -Force -SkipPublisherCheck
+    Install-Module -Name PSReadLine -Force -SkipPublisherCheck -AllowClobber -Verbose -Confirm:$false
 }
 if (!(Get-Module -ListAvailable -Name Posh-Git)) {
-    Install-Module -Name Posh-Git -Force -SkipPublisherCheck
+    Install-Module -Name Posh-Git -Force -SkipPublisherCheck -AllowClobber -Verbose -Confirm:$false
 }
 if (!(Get-Module -ListAvailable -Name PsFZF)) {
-    Install-Module -Name PsFZF -Force -SkipPublisherCheck
+    Install-Module -Name PsFZF -Force -SkipPublisherCheck -AllowClobber -Verbose -Confirm:$false
 }
 if (!(Get-Module -ListAvailable -Name PSWindowsUpdate)) {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
-    Install-Module PSWindowsUpdate -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+    Install-Module PSWindowsUpdate -Repository PSGallery -Force -SkipPublisherCheck -AllowClobber -Verbose -Confirm:$false
 }
 if (!(Get-Module -ListAvailable -Name Terminal-Icons)) {
     Set-PSRepository -Name "PSGallery" -InstallationPolicy Trusted
-    Install-Module -Name Terminal-Icons -Repository PSGallery -Force -AllowClobber -Verbose -AcceptLicense -Confirm:$false
+    Install-Module -Name Terminal-Icons -Repository PSGallery -Force -SkipPublisherCheck -AllowClobber -Verbose -Confirm:$false
 }
 
 Set-PSReadLineOption -BellStyle None
@@ -32,8 +32,8 @@ Set-PSReadLineKeyHandler -Key DownArrow -Function HistorySearchForward
 
 try
 {
-	choco --version
-	Write-Host "Chocolatey command present"
+	Write-Host "Chocolatey command present: "
+    choco --version
 	Import-Module $env:ChocolateyInstall\helpers\chocolateyProfile.psm1
 }
 catch
@@ -91,8 +91,12 @@ function System-Update() {
     Write-Host "Updating oh-my-posh..." -ForegroundColor "Yellow"
     oh-my-posh upgrade
     Write-Host "Updating WSL packs..." -ForegroundColor "Yellow"
-    wsl sudo apt --yes update
-    wsl sudo apt --yes upgrade
+    wsl --distribution Ubuntu sudo apt --yes update
+    wsl --distribution Ubuntu sudo apt --yes upgrade
+    #wsl --distribution Ubuntu sudo apt --yes autoremove
+	#wsl --distribution Ubuntu sudo apt --yes dist-upgrade
+	wsl --shutdown
+	#wsl --distribution Ubuntu ls
 }
 
 function Empty-RecycleBin {
