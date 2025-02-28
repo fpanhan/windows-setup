@@ -79,9 +79,9 @@
         "weight": "normal"
       },
       "historySize": 9001,
-      "opacity": 85,
+      "opacity": 65,
       "snapOnInput": true,
-      "useAcrylic": true
+      "useAcrylic": false
     },
     "list": [
       {
