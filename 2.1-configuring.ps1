@@ -123,30 +123,31 @@ finally {
 Write-Host "Installing vscode extensions..."
 
 $extensions = @(
-	@{name = "dbaeumer.vscode-eslint"},
-	@{name = "esbenp.prettier-vscode"},
-	@{name = "aaron-bond.better-comments"},
-	@{name = "formulahendry.auto-rename-tag"},
-	@{name = "naumovs.color-highlight"},
-	@{name = "anteprimorac.html-end-tag-labels"},
-	@{name = "github.vscode-pull-request-github"},
-	@{name = "eamodio.gitlens-insiders"},
-	@{name = "ms-dotnettools.csharp"},
-	@{name = "visualstudioexptteam.vscodeintellicode"},
-	@{name = "ms-playwright.playwright"},
-	@{name = "yzhang.markdown-all-in-one"},
-	@{name = "davidanson.vscode-markdownlint"},
-	@{name = "rangav.vscode-thunder-client"},
-	@{name = "github.copilo"},
-	@{name = "vscode-icons-team.vscode-icons"},
-	@{name = "ms-dotnettools.csharp"},
-	@{name = "ms-dotnettools.vscode-dotnet-runtime"},
-	@{name = "ms-vscode-remote.remote-containers"},
-	@{name = "ms-vscode.live-server"}
+	@{id = "dbaeumer.vscode-eslint"},
+	@{id = "esbenp.prettier-vscode"},
+	@{id = "aaron-bond.better-comments"},
+	@{id = "formulahendry.auto-rename-tag"},
+	@{id = "naumovs.color-highlight"},
+	@{id = "anteprimorac.html-end-tag-labels"},
+	@{id = "PKief.material-icon-theme"},
+	@{id = "github.vscode-pull-request-github"},
+	@{id = "eamodio.gitlens-insiders"},
+	@{id = "visualstudioexptteam.vscodeintellicode"},
+	@{id = "ms-playwright.playwright"},
+	@{id = "yzhang.markdown-all-in-one"},
+	@{id = "davidanson.vscode-markdownlint"},
+	@{id = "rangav.vscode-thunder-client"},
+	@{id = "github.copilo"},
+	@{id = "vscode-icons-team.vscode-icons"},
+	@{id = "ms-dotnettools.csharp"},
+	@{id = "ms-dotnettools.vscode-dotnet-runtime"},
+	@{id = "ms-dotnettools.csdevkit"},
+	@{id = "ms-vscode-remote.remote-containers"},
+	@{id = "ms-vscode.live-server"}
 );
 
 Foreach ($extension in $extensions) {
-	code --install-extension $extension.name --force
+	code --install-extension $extension.id --force
 }
 
 
