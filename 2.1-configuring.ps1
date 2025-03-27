@@ -139,6 +139,7 @@ $extensions = @(
 	@{id = "rangav.vscode-thunder-client"},
 	@{id = "github.copilo"},
 	@{id = "vscode-icons-team.vscode-icons"},
+	@{id = "usernamehw.errorlens"},
 	@{id = "ms-dotnettools.csharp"},
 	@{id = "ms-dotnettools.vscode-dotnet-runtime"},
 	@{id = "ms-dotnettools.csdevkit"},
